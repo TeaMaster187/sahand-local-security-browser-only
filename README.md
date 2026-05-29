@@ -1,4 +1,4 @@
-content = """# SIS // SAHAND - Tactical Intelligence System
+SIS // SAHAND - Tactical Intelligence System
 
 **Sovereign Data Management // Contested Environments**
 
@@ -82,9 +82,6 @@ To access the system, visit the official repository:
 
 > **"Your Data. Your Sovereignty. Your Operation."**
 """
-
-with open("README.md", "w", encoding="utf-8") as f:
-    f.write(content)
 1. Install dependencies:
    `npm install`
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
