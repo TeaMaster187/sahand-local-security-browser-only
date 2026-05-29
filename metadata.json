@@ -1,0 +1,15 @@
+{
+  "name": "Sahand Intelligence System (SIS) - Tactical Kernel",
+  "description": "A high-availability tactical kernel designed for sovereign data management in contested environments, featuring cryptographic vaults, SIGINT lab, and mesh-based intelligence.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "signal_intelligence",
+    "encrypted_vault",
+    "mesh_networking",
+    "digital_forensics"
+  ]
+}

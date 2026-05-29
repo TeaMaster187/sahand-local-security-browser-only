@@ -1,0 +1,181 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+/* Fallback Persian fonts from CDN */
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css');
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/samim-font@v4.0.5/dist/font-face.css');
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/shabnam-font@v5.0.1/dist/font-face.css');
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v3.4.0/dist/font-face.css');
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/gandom-font@v0.7.2/dist/font-face.css');
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-vazir: "Vazir", sans-serif;
+  --font-vazirmatn: "Vazirmatn", sans-serif;
+  --font-samim: "Samim", sans-serif;
+  --font-shabnam: "Shabnam", sans-serif;
+  --font-sahel: "Sahel", sans-serif;
+  --font-gandom: "Gandom", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-brand: var(--brand);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-card: var(--card);
+  --color-text-dim: var(--text-dim);
+}
+
+:root {
+  --brand: #1a1a1a;
+  --surface: #f5f5f5;
+  --border: #e5e5e5;
+  --card: #ffffff;
+  --text-dim: #9ca3af;
+}
+
+.theme-dark {
+  --brand: #ffffff;
+  --surface: #0a0a0a;
+  --border: #262626;
+  --card: #171717;
+  --text-dim: #737373;
+}
+
+.theme-matrix {
+  --brand: #00ff41;
+  --surface: #000000;
+  --border: #003b00;
+  --card: #001a00;
+  --text-dim: #008f11;
+}
+
+.theme-brutalist {
+  --brand: #facc15;
+  --surface: #000000;
+  --card: #000000;
+  --border: #ffffff;
+  --text-dim: #a3a3a3;
+}
+
+.theme-brutalist * {
+  border-radius: 0 !important;
+}
+
+.theme-brutalist #sidebar {
+  border-right-width: 4px !important;
+}
+
+.theme-brutalist #sidebar [data-sidebar-item] {
+  border: 1px solid transparent;
+}
+
+.theme-brutalist #sidebar [data-sidebar-item].active {
+  background-color: var(--brand) !important;
+  color: black !important;
+  font-weight: 900 !important;
+}
+
+.theme-nord {
+  --brand: #88C0D0;
+  --surface: #2E3440;
+  --border: #4C566A;
+  --card: #3B4252;
+  --text-dim: #D8DEE9;
+}
+
+.theme-solarized {
+  --brand: #268BD2;
+  --surface: #FDF6E3;
+  --border: #EEE8D5;
+  --card: #FFFBF0;
+  --text-dim: #93A1A1;
+}
+
+.theme-retro {
+  --brand: #FFB000;
+  --surface: #0a0a0a;
+  --border: #333333;
+  --card: #151515;
+  --text-dim: #FFB000;
+  --font-mono: 'Courier New', monospace;
+}
+
+.theme-retro * {
+  text-shadow: 0 0 5px var(--brand);
+}
+
+@layer base {
+  body {
+    @apply bg-surface text-brand font-sans antialiased overflow-hidden;
+  }
+}
+
+.font-vazir { font-family: "Vazir", sans-serif; }
+.font-vazirmatn { font-family: "Vazirmatn", sans-serif; }
+.font-samim { font-family: "Samim", sans-serif; }
+.font-shabnam { font-family: "Shabnam", sans-serif; }
+.font-sahel { font-family: "Sahel", sans-serif; }
+.font-gandom { font-family: "Gandom", sans-serif; }
+.font-inter { font-family: "Inter", sans-serif; }
+
+@keyframes shimmer {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}
+
+.night-vision {
+  filter: sepia(1) hue-rotate(60deg) brightness(0.8) contrast(1.2);
+}
+
+.high-contrast {
+  --brand: #fff;
+  --text: #fff;
+  --text-dim: #aaa;
+  --border: #fff;
+  --surface: #000;
+  --card: #000;
+  filter: contrast(1.5);
+}
+
+.size-small { font-size: 0.9em; }
+.size-medium { font-size: 1em; }
+.size-large { font-size: 1.15em; }
+
+.night-vision .high-contrast {
+  --brand: #0f0;
+  filter: sepia(1) hue-rotate(60deg) contrast(2);
+}
+
+.night-vision body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.05) 0px,
+    rgba(0, 0, 0, 0.05) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 10000;
+}
+
+/* Custom scrollbar for that technical feel */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-border rounded-full hover:bg-gray-400 transition-colors;
+}
+
