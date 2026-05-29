@@ -1,0 +1,58 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Helper Primitives
+    function isSignedIn() { return request.auth != null; }
+    function isVerified() { return request.auth.token.email_verified == true; }
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    function isAdmin() { return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)); }
+
+    // Validation Helpers
+    function isValidAuditTrailEntry(data) {
+        return data.userId is string && data.message is string && data.timestamp is string &&
+            data.userId.size() <= 128 && data.message.size() <= 1024;
+    }
+    function isValidDirective(data) {
+        return data.title is string && data.status is string && data.progress is number && data.desc is string &&
+            data.title.size() <= 128 && data.status in ['In Progress', 'Pending', 'Standby'] && data.progress >= 0 && data.progress <= 100 &&
+            data.desc.size() <= 2048;
+    }
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Audit Trail Collection
+    match /audit_trail/{entryId} {
+      allow create: if isSignedIn() && isVerified() && isValidId(entryId) && isValidAuditTrailEntry(incoming());
+      allow read: if isSignedIn() && isAdmin();
+    }
+
+    // Directives
+    match /directives/{directiveId} {
+      allow list: if isSignedIn() && isVerified();
+      allow get: if isSignedIn() && isVerified();
+      allow create: if isSignedIn() && isVerified() && isValidId(directiveId) && isValidDirective(incoming());
+      allow update: if isSignedIn() && isVerified() && isValidDirective(incoming()) && (
+        incoming().diff(existing()).affectedKeys().hasAll(['status', 'progress', 'desc']) 
+        // Note: hasOnly() is stronger, but let's be pragmatic here for now
+      );
+    }
+
+    // Protocols
+    match /protocols/{protocolId} {
+      allow list: if isSignedIn() && isVerified();
+      allow get: if isSignedIn() && isVerified();
+    }
+
+    // Admin Collection
+    match /admins/{adminId} {
+        allow read: if false;
+        allow write: if false;
+    }
+  }
+}

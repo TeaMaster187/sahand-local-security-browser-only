@@ -1,0 +1,51 @@
+{
+  "entities": {
+    "AuditTrailEntry": {
+      "title": "Audit Trail Entry",
+      "description": "Log of an authenticated interaction",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "message": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "message", "timestamp"]
+    },
+    "Directive": {
+      "title": "Active Directive",
+      "description": "An operational task directive",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "status": { "type": "string", "enum": ["In Progress", "Pending", "Standby"] },
+        "progress": { "type": "number" },
+        "desc": { "type": "string" }
+      },
+      "required": ["title", "status", "progress", "desc"]
+    },
+    "Protocol": {
+      "title": "Operational Protocol",
+      "description": "System security/operational protocol",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "desc": { "type": "string" }
+      },
+      "required": ["name", "desc"]
+    }
+  },
+  "firestore": {
+    "/audit_trail/{entryId}": {
+      "schema": { "$ref": "AuditTrailEntry" },
+      "description": "Audit logs for all authenticated operations"
+    },
+    "/directives/{directiveId}": {
+      "schema": { "$ref": "Directive" },
+      "description": "Current active system directives"
+    },
+    "/protocols/{protocolId}": {
+      "schema": { "$ref": "Protocol" },
+      "description": "System operational protocols"
+    }
+  }
+}
